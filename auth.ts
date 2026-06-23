@@ -8,14 +8,17 @@ const SPOTIFY_SCOPES = [
   "user-read-recently-played",
 ].join(" ");
 
+const SPOTIFY_AUTHORIZATION_URL =
+  "https://accounts.spotify.com/authorize?" +
+  new URLSearchParams({ scope: SPOTIFY_SCOPES }).toString();
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.AUTH_SECRET,
   providers: [
     Spotify({
       clientId: process.env.SPOTIFY_CLIENT_ID!,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
-      authorization: {
-        params: { scope: SPOTIFY_SCOPES },
-      },
+      authorization: SPOTIFY_AUTHORIZATION_URL,
     }),
   ],
   callbacks: {
