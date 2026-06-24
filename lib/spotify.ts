@@ -36,7 +36,8 @@ async function spotifyFetch(url: string, accessToken: string) {
     next: { revalidate: 0 },
   });
   if (!res.ok) {
-    throw new Error(`Spotify API error: ${res.status} ${url}`);
+    const text = await res.text();
+    throw new Error(`Spotify API error: ${res.status} ${url} - ${text}`);
   }
   return res.json();
 }
